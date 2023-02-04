@@ -1,0 +1,85 @@
+version: '3'
+
+networks:
+  elastic:
+
+services:
+  flog:
+    image: mingrammer/flog
+    command: -f json -d 1s -l
+    networks:
+      - elastic
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - node.name=elasticsearch
+      - ELASTIC_PASSWORD=elastic
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    networks:
+      - elastic
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:9200 | grep -q 'HTTP/1.1 200 OK'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.6.1
+    ports:
+      - 5601:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=elastic
+      - KIBANA_SYSTEM_PASSWORD=elastic
+    networks:
+      - elastic
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.6.1
+    command: filebeat -e --strict.perms=false -E output.elasticsearch.hosts=["elasticsearch:9200"]
+    user: root
+    labels:
+      co.elastic.logs/enabled: "false"
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - elastic
+    environment:
+      - setup.kibana.host="http://kibana:5601"
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=elastic
+    depends_on:
+      kibana:
+        condition: service_healthy
