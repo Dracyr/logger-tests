@@ -1,0 +1,39 @@
+---
+version: '3'
+
+networks:
+  quickwit:
+
+services:
+  flog:
+    image: mingrammer/flog
+    command: -f json -d 1s -l
+    networks:
+      - quickwit
+
+  quickwit:
+    image: quickwit/quickwit:0.4.0
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        quickwit index create --index-config /quickwit/config/index-config.yaml --overwrite --yes
+        quickwit run --no-color
+    ports:
+      - 7280:7280
+    volumes:
+      - ./data:/quickwit/qwdata
+      - ./quickwit.yaml:/quickwit/config/quickwit.yaml
+      - ./index-config.yaml:/quickwit/config/index-config.yaml
+    networks:
+      - quickwit
+
+  vector:
+    image: timberio/vector:0.25.0-distroless-libc
+    ports:
+      - 8383:8383
+    volumes:
+      - ./vector.toml:/etc/vector/vector.toml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - quickwit

@@ -1,0 +1,61 @@
+[sources.docker_logs]
+type = "docker_logs"
+
+[transforms.remap_docker]
+inputs = [ "docker_logs"]
+type = "remap"
+source = '''
+  .severity = if .stream == "stderr" {
+    "ERROR"
+  } else {
+    "INFO"
+  }
+
+  if (structured, err = parse_json(.message); err == null) {
+    .attributes.log = "json"
+    .body = .message
+  } else if (structured, err = parse_syslog(.message); err == null) {
+    .attributes.log = "syslog"
+    .body = structured.message
+    severity = downcase(structured.severity) ?? structured.severity
+
+    if includes(["emerg", "err", "crit", "alert"], severity) {
+      .severity = "ERROR"
+    } else if severity == "warning" {
+      .severity = "WARN"
+    } else if severity == "debug" {
+      .severity = "DEBUG"
+    } else if includes(["info", "notice"], severity) {
+      .severity = "INFO"
+    }
+  } else if (structured, err = parse_common_log(.message); err == null) {
+    .attributes.log = "clf"
+    .body = structured.message
+  } else {
+    .attributes.log = "other"
+    .body = .message
+  }
+
+  del(.container_created_at)
+  del(.label)
+
+  .resource.source_type = del(.source_type)
+  .resource.host.name = del(.host)
+  .resource.service.name = .container_name
+  .resource.container.name = del(.container_name)
+  .resource.container.image = del(.image)
+  .resource.container.id = del(.container_id)
+  .timestamp, err = to_unix_timestamp(.timestamp, unit: "milliseconds")
+'''
+
+# [sinks.emit_docker]
+# inputs = ["remap_docker"]
+# type = "console"
+# encoding.codec = "json"
+
+[sinks.quickwit_logs]
+type = "http"
+inputs = ["remap_docker"]
+encoding.codec = "json"
+framing.method = "newline_delimited"
+uri = "http://quickwit:7280/api/v1/otel-log-v0/ingest"

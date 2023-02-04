@@ -1,0 +1,90 @@
+# ============================ Node Configuration ==============================
+#
+# Website: https://quickwit.io
+# Docs: https://quickwit.io/docs/configuration/node-config
+#
+# Configure AWS credentials: https://quickwit.io/docs/guides/aws-setup#aws-credentials
+#
+# -------------------------------- General settings --------------------------------
+#
+# Config file format version.
+#
+version: 0.4
+#
+# Node ID. Must be unique within a cluster. If not set, a random node ID is generated on each startup.
+#
+# node_id: node-1
+#
+# Quickwit opens three sockets.
+# - for its HTTP server, hosting the UI and the REST API (TCP)
+# - for its gRPC service (TCP)
+# - for its Gossip cluster membership service (UDP)
+#
+# All three services are bound to the same host and a different port. The host can be an IP address or a hostname.
+#
+# Default HTTP server host is `127.0.0.1` and default HTTP port is 7280.
+# The default host value was chosen to avoid exposing the node to the open-world without users' explicit consent.
+# This allows for testing Quickwit in single-node mode or with multiple nodes running on the same host and listening
+# on different ports. However, in cluster mode, using this value is never appropriate because it causes the node to
+# ignore incoming traffic.
+# There are two options to set up a node in cluster mode:
+#   1. specify the node's hostname or IP
+#   2. pass `0.0.0.0` and let Quickwit do its best to discover the node's IP (see `advertise_address`)
+#
+# listen_address: 127.0.0.1
+# rest_listen_port: 7280
+#
+# IP address advertised by the node, i.e. the IP address that peer nodes should use to connect to the node for RPCs.
+# The environment variable `QW_ADVERTISE_ADDRESS` can also be used to override this value.
+# The default advertise address is `listen_address`. If `listen_address` is unspecified (`0.0.0.0`),
+# Quickwit attempts to sniff the node's IP by scanning the available network interfaces.
+# advertise_address: 192.168.0.42
+#
+# In order to join a cluster, one needs to specify a list of
+# seeds to connect to. If no port is specified, Quickwit will assume
+# the seeds are using the same port as the current node gossip port.
+# By default, the peer seed list is empty.
+#
+# peer_seeds:
+#   - quickwit-searcher-0.local
+#   - quickwit-searcher-1.local:10000
+#
+# Path to directory where temporary data (caches, intermediate indexing data structures)
+# is stored. Defaults to `./qwdata`.
+#
+# data_dir: /path/to/data/dir
+#
+# Metastore URI. Defaults to `data_dir/indexes#polling_interval=30s`,
+# which is a file-backed metastore and mostly convenient for testing. A cluster would
+# require a metastore backed by Amzon S3 or PostgreSQL.
+#
+# metastore_uri: s3://your-bucket/indexes
+# metastore_uri: postgres://username:password@host:port/db
+#
+# When using a file-backed metastore, the state of the metastore will be cached forever.
+# If you are indexing and searching from different processes, it is possible to periodically
+# refresh the state of the metastore on the searcher using the `polling_interval` hashtag.
+#
+# metastore_uri: s3://your-bucket/indexes#polling_interval=30s
+#
+# Default index root URI, which defines where index data (splits) is stored,
+# following the scheme `{default_index_root_uri}/{index-id}`. Defaults to `{data_dir}/indexes`.
+#
+# default_index_root_uri: s3://your-bucket/indexes
+#
+#
+# -------------------------------- Indexer settings --------------------------------
+#
+indexer:
+  enable_opentelemetry_otlp_service: ${QW_ENABLE_OPENTELEMETRY_OTLP_SERVICE:-false}
+#   split_store_max_num_bytes: 200G
+#   split_store_max_num_splits: 10000
+#
+#
+# -------------------------------- Searcher settings --------------------------------
+#
+searcher:
+  enable_jaeger_service: ${QW_ENABLE_JAEGER_SERVICE:-false}
+#   fast_field_cache_capacity: 10G
+#   split_footer_cache_capacity: 1G
+#   max_num_concurrent_split_streams: 100
