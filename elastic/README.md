@@ -25,13 +25,7 @@ open localhost:5601/app/logs/stream
 ```
 
 ## Resources
+To test the resource usage I started the monitoring stack in `../monitoring`, then ran the `run-test.sh` script. The ElasticSearch instance is configured with a heap  size of `512m` as lower sizes caused it to exit due to OutOfMemoryError.
 
-The output of running `docker stats` on a machine with 32gb of ram an an ElasticSeach heap size of `512m` as lower sizes caused it to exit due to OutOfMemoryError.
-
-```
-NAME                      CPU %     MEM USAGE
-elastic-filebeat-1        0.14%     91.38MiB
-elastic-kibana-1          0.68%     384.3MiB
-elastic-elasticsearch-1   1.91%     1.303GiB
-elastic-flog-1            0.02%     4.844MiB
-```
+![Elastic Memory Usage](elastic-memory.png)
+![Elastic CPU Usage](elastic-cpu.png)

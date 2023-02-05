@@ -1,0 +1,12 @@
+scrape_configs:
+# - job_name: cadvisor
+#   scrape_interval: 5s
+#   static_configs:
+#   - targets:
+#     - cadvisor:8080
+- job_name: 'docker_stats_exporter'
+  scrape_interval: 5s
+  metrics_path: /
+  static_configs:
+  - targets:
+      - 'stats:9487'

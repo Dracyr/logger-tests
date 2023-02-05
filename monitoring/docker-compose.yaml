@@ -1,0 +1,76 @@
+version: '3.2'
+
+networks:
+  monitoring:
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - stats
+    networks:
+      - monitoring
+
+  stats:
+    image: wywywywy/:latest
+    ports:
+      - 9487:9487
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:9.3.6
+    ports:
+      - "9080:3000"
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_RENDERING_SERVER_URL=http://renderer:9081/render
+      - GF_RENDERING_CALLBACK_URL=http://grafana:3000/
+    volumes:
+      - ./dashboard.json:/etc/grafana/provisioning/dashboards/logging.json
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+        apiVersion: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            isDefault: true
+            url: http://prometheus:9090
+            uid: Pzx9ha0Vz
+        EOF
+        cat <<EOF > /etc/grafana/provisioning/dashboards/dbs.yaml
+        apiVersion: 1
+        providers:
+          - name: dashboards
+            type: file
+            options:
+              path: /etc/grafana/provisioning/dashboards/
+              foldersFromFilesStructure: true
+        EOF
+        /run.sh
+    networks:
+      - monitoring
+  renderer:
+    image: grafana/grafana-image-renderer:latest
+    ports:
+      - 9081:9081
+    environment:
+      - HTTP_HOST=0.0.0.0
+      - HTTP_PORT=9081
+    networks:
+      - monitoring

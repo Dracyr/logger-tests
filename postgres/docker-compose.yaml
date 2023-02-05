@@ -1,0 +1,105 @@
+version: '3'
+
+networks:
+  postgres:
+
+services:
+  flog:
+    image: mingrammer/flog
+    command: -f json -d 1s -l
+
+  postgres:
+    image: timescale/timescaledb:2.9.2-pg15
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "postgres"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+
+  grafana:
+    image: grafana/grafana:9.3.6
+    ports:
+      - "5430:3000"
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./dashboard.json:/etc/grafana/provisioning/dashboards/logging.json
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+        apiVersion: 1
+        datasources:
+          - name: PostgreSQL
+            type: postgres
+            uid: PCC52D03280B7034C
+            url: postgres:5432
+            database: postgres
+            user: postgres
+            isDefault: true
+            secureJsonData:
+              password: postgres
+            jsonData:
+              sslmode: 'disable'
+              maxOpenConns: 0 # Grafana v5.4+
+              maxIdleConns: 2 # Grafana v5.4+
+              connMaxLifetime: 14400 # Grafana v5.4+
+              postgresVersion: 1500
+              timescaledb: true
+        EOF
+        cat <<EOF > /etc/grafana/provisioning/dashboards/dbs.yaml
+        apiVersion: 1
+        providers:
+          - name: dashboards
+            type: file
+            options:
+              path: /etc/grafana/provisioning/dashboards/
+              foldersFromFilesStructure: true
+        EOF
+        /run.sh
+    networks:
+      - postgres
+
+  postgrest:
+    image: postgrest/postgrest:v10.1.2
+    environment:
+      PGRST_DB_URI: "postgres://postgres:postgres@postgres:5432/postgres"
+      PGRST_OPENAPI_SERVER_PROXY_URI: http://127.0.0.1:5480
+      PGRST_OPENAPI_MODE: "ignore-privileges"
+      PGRST_OPENAPI_SECURITY_ACTIVE: "false"
+      PGRST_SERVER_PORT: 5480
+      PGRST_DB_ANON_ROLE: postgres
+      PGRST_LOG_LEVEL: info
+    ports:
+      - "5480:5480"
+    networks:
+      - postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  vector:
+    image: timberio/vector:nightly-2023-02-05-distroless-libc
+    ports:
+      - 5483:8383
+    volumes:
+      - ./vector.toml:/etc/vector/vector.toml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - postgres
+    depends_on:
+      - postgrest

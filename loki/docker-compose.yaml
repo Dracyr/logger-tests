@@ -8,8 +8,6 @@ services:
   flog:
     image: mingrammer/flog
     command: -f json -d 1s -l
-    networks:
-      - loki
 
   loki:
     image: grafana/loki:2.7.1
@@ -36,13 +34,15 @@ services:
       - loki
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:9.3.6
     ports:
-      - "3000:3000"
+      - "3101:3000"
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./dashboard.json:/etc/grafana/provisioning/dashboards/logging.json
     entrypoint:
       - sh
       - -euc
@@ -54,17 +54,26 @@ services:
           - name: Loki
             type: loki
             access: proxy
+            uid: P8E80F9AEF21F6940
             url: http://loki:3100
+            isDefault: true
             jsonData:
               httpHeaderName1: "X-Scope-OrgID"
             secureJsonData:
               httpHeaderValue1: "tenant1"
         EOF
+        cat <<EOF > /etc/grafana/provisioning/dashboards/dbs.yaml
+        apiVersion: 1
+        providers:
+          - name: dashboards
+            type: file
+            options:
+              path: /etc/grafana/provisioning/dashboards/
+              foldersFromFilesStructure: true
+        EOF
         /run.sh
-    ports:
-      - "3001:3000"
     healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3101/api/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
