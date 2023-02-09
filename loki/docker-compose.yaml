@@ -7,7 +7,7 @@ networks:
 services:
   flog:
     image: mingrammer/flog
-    command: -f json -d 1s -l
+    command: -f json -d 100ms -l
 
   loki:
     image: grafana/loki:2.7.1

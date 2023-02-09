@@ -19,7 +19,7 @@ services:
       - monitoring
 
   stats:
-    image: wywywywy/:latest
+    image: wywywywy/docker_stats_exporter:latest
     ports:
       - 9487:9487
     volumes:

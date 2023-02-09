@@ -6,22 +6,23 @@ networks:
 services:
   flog:
     image: mingrammer/flog
-    command: -f json -d 1s -l
+    command: -f json -d 100ms -l
 
   postgres:
     image: timescale/timescaledb:2.9.2-pg15
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     networks:
       - postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-d", "postgres"]
+      test: ["CMD-SHELL", "pg_isready", "-d", "postgres", "-U", "postgres"]
       interval: 10s
       timeout: 60s
       retries: 5
