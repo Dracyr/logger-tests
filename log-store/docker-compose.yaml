@@ -1,0 +1,26 @@
+version: '3'
+
+networks:
+  log_store:
+
+services:
+  flog:
+    image: mingrammer/flog
+    command: -f json -d 1s -l
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:1601"
+    networks:
+      - log_store
+    depends_on:
+      - log_store
+
+  log_store:
+    image: logstore/log-store:latest
+    ports:
+      - 1234:1234 # Ingestion
+      - 1601:1601 # syslog ingestion
+      - 8181:8181 # web interface
+    networks:
+      - log_store
