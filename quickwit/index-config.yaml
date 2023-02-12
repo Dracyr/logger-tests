@@ -35,6 +35,8 @@ search_settings:
 
 indexing_settings:
   commit_timeout_secs: 10
+  resources:
+    heap_size: 10mb # Default: 2_000_000_000
 
 retention:
   period: 90 days

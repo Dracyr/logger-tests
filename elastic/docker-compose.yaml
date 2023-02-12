@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 networks:
   elastic:
@@ -21,9 +21,10 @@ services:
       - xpack.security.enabled=false
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      # - ES_JAVA_OPTS=-Xms512m -Xmx512m
     networks:
       - elastic
+    mem_limit: 512m
     healthcheck:
       test:
         [
@@ -48,6 +49,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
+    mem_limit: 768m
     healthcheck:
       test:
         [
