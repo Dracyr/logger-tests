@@ -115,9 +115,9 @@
             "type": "prometheus",
             "uid": "Pzx9ha0Vz"
           },
-          "editorMode": "code",
+          "editorMode": "builder",
           "exemplar": false,
-          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"elastic\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"elastic-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -129,8 +129,8 @@
             "type": "prometheus",
             "uid": "Pzx9ha0Vz"
           },
-          "editorMode": "code",
-          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"elastic\"}[$__interval]))",
+          "editorMode": "builder",
+          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"elastic-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -231,7 +231,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -244,7 +244,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -339,12 +339,12 @@
             "type": "prometheus",
             "uid": "Pzx9ha0Vz"
           },
-          "editorMode": "code",
+          "editorMode": "builder",
           "exemplar": false,
-          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"loki\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"loki-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
-          "legendFormat": "{{container_label_com_docker_compose_service}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "Container Memory"
         },
@@ -354,7 +354,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"loki\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"loki-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -455,7 +455,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -468,7 +468,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -568,7 +568,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"quickwit\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"quickwit-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -581,7 +581,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"quickwit\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"quickwit-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -682,7 +682,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -695,7 +695,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -752,8 +752,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -792,7 +791,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"postgres\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"postgres-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -805,7 +804,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"postgres\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"postgres-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -866,8 +865,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -906,7 +904,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres-.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -919,7 +917,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres-.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
