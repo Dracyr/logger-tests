@@ -20,5 +20,8 @@ curl \
     --data-urlencode "start=1676219758.704" \
     --data-urlencode "end=1676223358.704" \
     --data-urlencode "step=14" \
-    http://localhost:9090/api/v1/query_range
+    http://localhost:9090/api/v1/query_range > data.txt
+
+cat data.txt | jq '[.data.result[] | {label: .metric.container_label_com_docker_compose_service, data: ([ .values[] | 
+    {x: .[0], y: .[1] } ]) }]'
 ```

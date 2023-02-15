@@ -24,3 +24,4 @@ services:
       - 8181:8181 # web interface
     networks:
       - log_store
+    mem_limit: 128m

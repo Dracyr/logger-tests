@@ -4,9 +4,10 @@ networks:
   postgres:
 
 services:
-  flog:
-    image: mingrammer/flog
-    command: -f json -d 100ms -l
+  # Uncomment to start logging
+  # flog:
+  #   image: mingrammer/flog
+  #   command: -f json -d 100ms -l
 
   postgres:
     image: timescale/timescaledb:2.9.2-pg15
@@ -19,6 +20,7 @@ services:
     volumes:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
       - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
     networks:
       - postgres
     healthcheck:
