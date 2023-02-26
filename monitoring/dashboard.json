@@ -91,10 +91,305 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 13,
         "w": 12,
         "x": 0,
         "y": 0
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"elastic\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
+          "hide": false,
+          "legendFormat": "Elastic",
+          "range": true,
+          "refId": "Total"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"loki\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
+          "hide": false,
+          "legendFormat": "Loki",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"quickwit\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
+          "hide": false,
+          "legendFormat": "Quickwit",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"postgres\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
+          "hide": false,
+          "legendFormat": "Postgres",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"log-store\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
+          "hide": false,
+          "legendFormat": "Log-Store",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "Total Memory",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Pzx9ha0Vz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "right",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 20,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic.*\", name!~\".*flog.*\"}[30s]))",
+          "hide": false,
+          "legendFormat": "Elastic",
+          "range": true,
+          "refId": "Total"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki.*\", name!~\".*flog.*\"}[30s]))",
+          "hide": false,
+          "legendFormat": "Loki",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit.*\", name!~\".*flog.*\"}[30s]))",
+          "hide": false,
+          "legendFormat": "Quickwit",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres.*\", name!~\".*flog.*\"}[30s]))",
+          "hide": false,
+          "legendFormat": "Postgres",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"log-store.*\", name!~\".*flog.*\"}[30s]))",
+          "hide": false,
+          "legendFormat": "Log-Store",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "Total CPU",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Pzx9ha0Vz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "right",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 13
       },
       "id": 2,
       "options": {
@@ -115,9 +410,9 @@
             "type": "prometheus",
             "uid": "Pzx9ha0Vz"
           },
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"elastic-.*\"}[$__interval])",
+          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"elastic\", container_label_com_docker_compose_service!=\"flog\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -129,8 +424,8 @@
             "type": "prometheus",
             "uid": "Pzx9ha0Vz"
           },
-          "editorMode": "builder",
-          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"elastic-.*\"}[$__interval]))",
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"elastic\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -208,9 +503,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 13
       },
-      "id": 6,
+      "id": 13,
       "options": {
         "legend": {
           "calcs": [],
@@ -231,7 +526,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic-.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic.*\", name!~\".*flog.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -244,7 +539,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic-.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"elastic.*\", name!~\".*flog.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -318,7 +613,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 21
       },
       "id": 3,
       "options": {
@@ -339,12 +634,12 @@
             "type": "prometheus",
             "uid": "Pzx9ha0Vz"
           },
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"loki-.*\"}[$__interval])",
+          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"loki\", container_label_com_docker_compose_service!=\"flog\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
-          "legendFormat": "{{name}}",
+          "legendFormat": "{{container_label_com_docker_compose_service}}",
           "range": true,
           "refId": "Container Memory"
         },
@@ -354,7 +649,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"loki-.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"loki\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -432,7 +727,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 21
       },
       "id": 7,
       "options": {
@@ -455,7 +750,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki-.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki.*\", name!~\".*flog.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -468,7 +763,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki-.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"loki.*\", name!~\".*flog.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -545,7 +840,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 29
       },
       "id": 4,
       "options": {
@@ -568,7 +863,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"quickwit-.*\"}[$__interval])",
+          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"quickwit\", container_label_com_docker_compose_service!=\"flog\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -581,7 +876,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"quickwit-.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"quickwit\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -659,7 +954,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 29
       },
       "id": 9,
       "options": {
@@ -682,7 +977,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit-.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit.*\", name!~\".*flog.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -695,7 +990,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit-.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"quickwit.*\", name!~\".*flog.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -752,7 +1047,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -768,7 +1064,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 37
       },
       "id": 5,
       "options": {
@@ -791,7 +1087,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_memory_usage_bytes{name=~\"postgres-.*\"}[$__interval])",
+          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"postgres\", container_label_com_docker_compose_service!=\"flog\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -804,7 +1100,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_memory_usage_bytes{name=~\"postgres-.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"postgres\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -865,7 +1161,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -881,7 +1178,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 24
+        "y": 37
       },
       "id": 8,
       "options": {
@@ -904,7 +1201,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres-.*\"}[$__interval])",
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres.*\", name!~\".*flog.*\"}[$__interval])",
           "instant": false,
           "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
           "legendFormat": "{{name}}",
@@ -917,7 +1214,7 @@
             "uid": "Pzx9ha0Vz"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres-.*\"}[$__interval]))",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"postgres.*\", name!~\".*flog.*\"}[$__interval]))",
           "hide": false,
           "legendFormat": "Total",
           "range": true,
@@ -927,9 +1224,233 @@
       "title": "Postgres CPU",
       "transparent": true,
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Pzx9ha0Vz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "right",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 45
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"log-store\", container_label_com_docker_compose_service!=\"flog\"}[$__interval])",
+          "instant": false,
+          "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "Container Memory"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(container_memory_working_set_bytes{container_label_com_docker_compose_project=\"log-store\", container_label_com_docker_compose_service!=\"flog\"}[$__interval]))",
+          "hide": false,
+          "legendFormat": "Total",
+          "range": true,
+          "refId": "Total"
+        }
+      ],
+      "title": "Log-Store",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Pzx9ha0Vz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "right",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 100,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 20,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 45
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg_over_time(dockerstats_cpu_usage_ratio{name=~\"log-store.*\", name!~\".*flog.*\"}[$__interval])",
+          "instant": false,
+          "key": "Q-c196a04b-bed9-464c-8d66-bcff99d91ff8-1",
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "Container Memory"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Pzx9ha0Vz"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(dockerstats_cpu_usage_ratio{name=~\"log-store.*\", name!~\".*flog.*\"}[$__interval]))",
+          "hide": false,
+          "legendFormat": "Total",
+          "range": true,
+          "refId": "Total"
+        }
+      ],
+      "title": "Log-Store CPU",
+      "transparent": true,
+      "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -937,13 +1458,13 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
-    "to": "now"
+    "from": "2023-02-26T13:29:39.069Z",
+    "to": "2023-02-26T14:00:21.959Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Logging Metrics",
   "uid": "uWhv0-04z",
-  "version": 1,
+  "version": 6,
   "weekStart": ""
 }
